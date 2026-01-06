@@ -224,8 +224,12 @@ cd ..
 
    - Each iteration is a fresh OpenCode session
    - OpenCode only completes ONE task per iteration
-   - All changes are verified (typecheck, tests) before marking complete
-   - Git commits ensure version control and rollback capability
+    - All changes are verified (typecheck, tests) before marking complete
+    - Git commits ensure version control and rollback capability
+
+## Inspiration
+
+This project is inspired by the article [Ralph](https://ghuntley.com/ralph/) by Gregor Hately.
 
 ## License
 
