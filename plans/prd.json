@@ -1,18 +1,34 @@
 {
-  "tasks": [
+  "project": "Bun Project",
+  "backlog": [
     {
       "id": "1",
-      "description": "Initialize project structure",
+      "priority": 1,
+      "feature": "Initialize project structure",
       "passes": true
     },
     {
       "id": "2",
-      "description": "Set up package.json with dependencies",
+      "priority": 2,
+      "feature": "Set up package.json with dependencies",
       "passes": true
     },
     {
       "id": "3",
-      "description": "Create basic TypeScript configuration",
+      "priority": 2,
+      "feature": "Create basic TypeScript configuration",
+      "passes": true
+    },
+    {
+      "id": 4,
+      "priority": 1,
+      "feature": "Configure the testing environment: Install Bun, setup 'bun test' with a sample test file, and configure 'bun x tsc --noEmit' for type checking.",
+      "passes": false
+    },
+    {
+      "id": 5,
+      "priority": 2,
+      "feature": "Implement the core logic following the PRD requirements.",
       "passes": false
     }
   ]
