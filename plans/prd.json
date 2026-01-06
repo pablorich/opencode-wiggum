@@ -173,11 +173,11 @@
       "id": "15",
       "priority": 3,
       "feature": "Create integration tests for CLI commands: add, update, list, complete, status with command-line argument parsing",
-      "status": "pending",
+      "status": "completed",
       "category": "test",
       "createdAt": "2026-01-05T10:00:00Z",
-      "completedAt": null,
-      "completedBy": null,
+      "completedAt": "2026-01-05T11:15:00Z",
+      "completedBy": "opencode",
       "dependencies": ["11"],
       "notes": null
     }

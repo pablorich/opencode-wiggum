@@ -2,8 +2,10 @@
 import type { TaskStatus, TaskCategory } from "./types.js";
 import { inferCategory, prompt } from "./utils.js";
 import { TaskManager } from "./task-manager.js";
+import { TaskRepository } from "./task-repository.js";
 
-const manager = new TaskManager();
+const prdPath = process.env.PRD_PATH || "plans/prd.json";
+const manager = new TaskManager(new TaskRepository(prdPath));
 
 async function addTask(): Promise<void> {
   console.log("Adding new task...");
