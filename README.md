@@ -186,11 +186,13 @@ To create a new release:
 4. Push the tag: `git push --tags`
 
 The GitHub Actions workflow will automatically:
+
 - Build the binaries
 - Create a ZIP archive with `wiggum` and `task` executables
 - Upload `install.sh` and the ZIP archive to the release
 
 Alternatively, create a release manually:
+
 ```bash
 # Build binaries
 bun run build
@@ -224,12 +226,12 @@ cd ..
 
    - Each iteration is a fresh OpenCode session
    - OpenCode only completes ONE task per iteration
-    - All changes are verified (typecheck, tests) before marking complete
-    - Git commits ensure version control and rollback capability
+   - All changes are verified (typecheck, tests) before marking complete
+   - Git commits ensure version control and rollback capability
 
 ## Inspiration
 
-This project is inspired by the article [Ralph](https://ghuntley.com/ralph/) by Gregor Hately.
+This project is inspired by the article [Ralph](https://ghuntley.com/ralph/) by Geoffrey Huntley.
 
 ## License
 

@@ -38,7 +38,7 @@ async function runWiggum() {
       2. If it is environment setup, perform it now (install deps, config files).
       3. For any feature, verify using 'bunx tsc --noEmit' and 'bun test'.
       4. If successful: 
-         - Mark the task as complete using 'task complete <id>'.
+         - Mark the task as complete by running 'task complete <id>'.
          - Record details in ${LOG_PATH}.
          - Create a git commit.
          - STOP HERE. Do not check for tasks again. Do not look for next task.
