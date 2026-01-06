@@ -47,7 +47,7 @@ async function runWiggum() {
       process.exit(1);
     }
 
-    const tasksOutput = await $`PRD_PATH=${PRD_PATH} bun run src/task-cli.ts list`.text();
+    const tasksOutput = await $`PRD_PATH=${PRD_PATH} task list`.text();
 
     const prompt = `
       Context: @${LOG_PATH}
@@ -58,11 +58,11 @@ async function runWiggum() {
       CRITICAL: You are in an automated loop. Complete exactly ONE task, then STOP. Do NOT check for more work. Do NOT continue to next task. Let the loop restart you in a fresh session.
       
       Task:
-      1. Choose highest priority task from available tasks list.
+      1. Choose highest priority task from the available tasks list.
       2. If it is environment setup, perform it now (install deps, config files).
       3. For any feature, verify using 'bunx tsc --noEmit' and 'bun test'.
       4. If successful: 
-         - Mark the task as complete using 'bun run src/task-cli.ts complete <id>'.
+         - Mark the task as complete using 'task complete <id>'.
          - Record details in ${LOG_PATH}.
          - Create a git commit.
          - STOP HERE. Do not check for tasks again. Do not look for next task.
