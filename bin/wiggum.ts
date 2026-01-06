@@ -1,10 +1,34 @@
+#!/usr/bin/env bun
 import { $ } from "bun";
 import { existsSync } from "fs";
-import { join, dirname } from "path";
-import { fileURLToPath } from "url";
+import { join } from "path";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
 const args = process.argv.slice(2);
+
+if (args.length === 0 || args[0] === "--help" || args[0] === "-h") {
+  console.log(`
+Wiggum - Automated task completion using OpenCode and Bun
+
+Usage:
+  wiggum [prd-path] [max-iterations]
+  
+Arguments:
+  prd-path         Optional path to prd.json file (default: ./plans/prd.json)
+  max-iterations    Maximum number of iterations (default: 10)
+
+Examples:
+  wiggum                           # Run with default settings
+  wiggum ./my-prd.json              # Use custom PRD file
+  wiggum ./my-prd.json 20           # Run with 20 max iterations
+  wiggum 20                         # Use default PRD, 20 iterations
+  
+Environment:
+  Works in the current directory (like git)
+  Looks for plans/prd.json by default
+  Creates/updates progress.txt in current directory
+  `);
+  process.exit(0);
+}
 
 const CUSTOM_PRD_PATH = args[0];
 const MAX_ITERATIONS = parseInt(args[1]) || 10;
@@ -34,11 +58,11 @@ async function runWiggum() {
       CRITICAL: You are in an automated loop. Complete exactly ONE task, then STOP. Do NOT check for more work. Do NOT continue to next task. Let the loop restart you in a fresh session.
       
       Task:
-      1. Choose the highest priority task from the available tasks list.
+      1. Choose highest priority task from available tasks list.
       2. If it is environment setup, perform it now (install deps, config files).
       3. For any feature, verify using 'bunx tsc --noEmit' and 'bun test'.
       4. If successful: 
-         - Mark the task as complete using 'bun run task complete <id>'.
+         - Mark the task as complete using 'bun run src/task-cli.ts complete <id>'.
          - Record details in ${LOG_PATH}.
          - Create a git commit.
          - STOP HERE. Do not check for tasks again. Do not look for next task.

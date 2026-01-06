@@ -1,14 +1,21 @@
 {
-  "name": "natural-scrapper",
+  "name": "wiggum-opencode",
   "version": "0.1.0",
-  "description": "A web scraping tool",
+  "description": "Automated task completion using OpenCode and Bun",
   "type": "module",
   "scripts": {
     "test": "bun test",
     "typecheck": "bunx tsc --noEmit",
     "lint": "eslint .",
     "prepare": "husky",
-    "task": "bun src/task-cli.ts"
+    "task": "bun src/task-cli.ts",
+    "build:wiggum": "bun build bin/wiggum.ts --outfile bin/wiggum --compile",
+    "build:task": "bun build bin/task.ts --outfile bin/task --compile",
+    "build": "bun run build:wiggum && bun run build:task"
+  },
+  "bin": {
+    "wiggum": "./bin/wiggum.ts",
+    "task": "./bin/task.ts"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.52.0",

@@ -6,6 +6,8 @@ bun.lockb
 dist/
 build/
 *.tsbuildinfo
+bin/*.exe
+bin/*.sh
 
 # Environment files
 .env
