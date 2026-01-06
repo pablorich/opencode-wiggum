@@ -52,3 +52,10 @@ Progress Log
 - Uses TaskRepository for data persistence
 - Verified with bun x tsc --noEmit (no errors)
 - Verified with bun test (10 pass, 0 fail)
+2025-01-06: Task 10 - Extract utility functions - COMPLETED
+- Created src/utils.ts with utility functions
+- Extracted inferCategory() function from task-cli.ts
+- Extracted prompt() function from task-cli.ts
+- Updated src/task-cli.ts to import utilities from utils.ts
+- Verified with bun x tsc --noEmit (no errors)
+- Verified with bun test (10 pass, 0 fail)
