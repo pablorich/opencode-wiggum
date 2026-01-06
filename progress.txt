@@ -22,3 +22,7 @@ Progress Log
 - Created AGENTS.md with project overview and components
 - Documented project state, infrastructure, and development workflow
 - Verified with bun x tsc --noEmit and bun test
+2025-01-06: Task 7 - Setup a gitignore file - COMPLETED
+- Created .gitignore with common exclusions
+- Verified git ignores node_modules, nul, and other unwanted files
+- Verified with bun x tsc --noEmit and bun test

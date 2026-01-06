@@ -41,7 +41,7 @@
       "id": 7,
       "priority": 1,
       "feature": "Setup a gitignore file",
-      "passes": false
+      "passes": true
     }
   ]
 }
