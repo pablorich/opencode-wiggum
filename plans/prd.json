@@ -23,12 +23,12 @@
       "id": 4,
       "priority": 1,
       "feature": "Configure the testing environment: Install Bun, setup 'bun test' with a sample test file, and configure 'bun x tsc --noEmit' for type checking.",
-      "passes": false
+      "passes": true
     },
     {
       "id": 5,
       "priority": 2,
-      "feature": "Implement the core logic following the PRD requirements.",
+      "feature": "Create an AGENTS.md file that has a brief description of the project state and components meant to be read by an LLM, with the purpose to feed context more efficiently than by loading complete files.",
       "passes": false
     }
   ]
