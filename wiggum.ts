@@ -16,12 +16,15 @@ async function runWiggum() {
       process.exit(1);
     }
 
-    // The prompt instructs the AI to prioritize the testing setup as defined in the PRD.
+    // The prompt instructs AI to prioritize testing setup as defined in PRD.
     const prompt = `
       Context: @${PRD_PATH} @${LOG_PATH}
+      
+      CRITICAL: You are in an automated loop. Complete exactly ONE task, then STOP. Do NOT check for more work. Do NOT continue to next task. Let the loop restart you in a fresh session.
+      
       Task:
       1. Choose the highest priority task in ${PRD_PATH} where 'status' is not 'completed' and all dependencies are 'completed'.
-      2. If it is the environment setup, perform it now (install deps, config files).
+      2. If it is environment setup, perform it now (install deps, config files).
       3. For any feature, verify using 'bunx tsc --noEmit' and 'bun test'.
       4. If successful: 
          - Set 'status' to 'completed'.
@@ -29,8 +32,10 @@ async function runWiggum() {
          - Set 'completedBy' to 'opencode'.
          - Record details in ${LOG_PATH}.
          - Create a git commit.
-      5. ONLY WORK ON ONE FEATURE PER TURN.
-      6. If the entire PRD is done, respond with: <promise>COMPLETE</promise>.
+         - STOP HERE. Do not check PRD again. Do not look for next task.
+      5. If the entire PRD is done (no remaining uncompleted tasks), respond with: <promise>COMPLETE</promise>.
+      
+      After completing one task, simply report completion with a brief summary. Do not look at PRD again. Do not check for next task. The loop will call you again.
     `;
 
     const result = await $`opencode run -m opencode/glm-4.7-free ${prompt}`.text();
