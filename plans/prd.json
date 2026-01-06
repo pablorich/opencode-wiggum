@@ -29,6 +29,18 @@
       "id": 5,
       "priority": 2,
       "feature": "Create an AGENTS.md file that has a brief description of the project state and components meant to be read by an LLM, with the purpose to feed context more efficiently than by loading complete files.",
+      "passes": true
+    },
+    {
+      "id": 6,
+      "priority": 2,
+      "feature": "Set up eslint and a precommit hook that runs the linter automatically",
+      "passes": false
+    },
+    {
+      "id": 7,
+      "priority": 1,
+      "feature": "Setup a gitignore file",
       "passes": false
     }
   ]
