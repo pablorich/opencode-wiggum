@@ -35,7 +35,7 @@
       "id": 6,
       "priority": 2,
       "feature": "Set up eslint and a precommit hook that runs the linter automatically",
-      "passes": false
+      "passes": true
     },
     {
       "id": 7,
