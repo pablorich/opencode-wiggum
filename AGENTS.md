@@ -7,6 +7,7 @@ This is a tool made with Typescript, bun, and opencode, to iteratively complete 
 **Status:** Early development - core infrastructure complete
 **Framework:** TypeScript 5.3.3, Bun 1.3.5
 **Build System:** Bun native runner and test framework
+**Task Management:** This project uses wiggum (wiggum.ts) to iteratively manage and complete tasks via opencode
 
 ## Core Components
 

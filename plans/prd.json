@@ -106,7 +106,9 @@
       "createdAt": "2026-01-05T10:00:00Z",
       "completedAt": "2026-01-05T10:30:00Z",
       "completedBy": "opencode",
-      "dependencies": ["8"],
+      "dependencies": [
+        "8"
+      ],
       "notes": null
     },
     {
@@ -130,7 +132,11 @@
       "createdAt": "2026-01-05T10:00:00Z",
       "completedAt": "2026-01-05T11:00:00Z",
       "completedBy": "opencode",
-      "dependencies": ["8", "9", "10"],
+      "dependencies": [
+        "8",
+        "9",
+        "10"
+      ],
       "notes": null
     },
     {
@@ -142,7 +148,9 @@
       "createdAt": "2026-01-05T10:00:00Z",
       "completedAt": "2026-01-05T10:40:00Z",
       "completedBy": "opencode",
-      "dependencies": ["8"],
+      "dependencies": [
+        "8"
+      ],
       "notes": null
     },
     {
@@ -154,7 +162,9 @@
       "createdAt": "2026-01-05T10:00:00Z",
       "completedAt": "2026-01-05T10:45:00Z",
       "completedBy": "opencode",
-      "dependencies": ["9"],
+      "dependencies": [
+        "9"
+      ],
       "notes": null
     },
     {
@@ -166,7 +176,9 @@
       "createdAt": "2026-01-05T10:00:00Z",
       "completedAt": "2026-01-05T10:50:00Z",
       "completedBy": "opencode",
-      "dependencies": ["10"],
+      "dependencies": [
+        "10"
+      ],
       "notes": null
     },
     {
@@ -178,7 +190,9 @@
       "createdAt": "2026-01-05T10:00:00Z",
       "completedAt": "2026-01-05T11:15:00Z",
       "completedBy": "opencode",
-      "dependencies": ["11"],
+      "dependencies": [
+        "11"
+      ],
       "notes": null
     },
     {
@@ -190,7 +204,9 @@
       "createdAt": "2026-01-05T12:00:00Z",
       "completedAt": "2026-01-05T13:00:00Z",
       "completedBy": "opencode",
-      "dependencies": ["10"],
+      "dependencies": [
+        "10"
+      ],
       "notes": "Replaced manual stdin handling with Node.js readline.question() API for proper Enter key and backspace support"
     },
     {
@@ -216,6 +232,18 @@
       "completedBy": "opencode",
       "dependencies": [],
       "notes": "Created cross-platform.test.ts with 6 test cases verifying path handling, file operations, and platform-specific behavior. All tests pass on Windows 11."
+    },
+    {
+      "id": "19",
+      "priority": 1,
+      "feature": "add a line to the wiggum prompt that ensures that the current project has an AGENTS.md file and in it is established that the project is using wiggum to manage tasks",
+      "status": "completed",
+      "category": "docs",
+      "createdAt": "2026-01-06T02:57:12.769Z",
+      "completedAt": "2026-01-06T03:06:50.756Z",
+      "completedBy": "manual",
+      "dependencies": [],
+      "notes": "read current AGENTS.md file and also add that if needed"
     }
   ]
 }

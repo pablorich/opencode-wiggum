@@ -124,3 +124,7 @@ Progress Log
 - All tests pass on Windows 11
 - Verified with bun test (55 pass, 0 fail)
 - Verified with bun run typecheck (no errors)
+2026-01-06: Task 19 - Document wiggum in AGENTS.md - COMPLETED
+- Added line to Project State section documenting use of wiggum for task management
+- Verified with bun test (67 pass, 0 fail)
+- Verified with bun run typecheck (no errors)
