@@ -11,7 +11,8 @@
     "task": "bun src/task-cli.ts",
     "build:wiggum": "bun build bin/wiggum.ts --outfile bin/wiggum --compile",
     "build:task": "bun build bin/task.ts --outfile bin/task --compile",
-    "build": "bun run build:wiggum && bun run build:task"
+    "build": "bun scripts/build.ts",
+    "build:release": "bun scripts/build.ts && powershell -Command \"Compress-Archive -Path bin/wiggum,bin/task -DestinationPath wiggum-windows-x64.zip -Force\""
   },
   "bin": {
     "wiggum": "./bin/wiggum.ts",

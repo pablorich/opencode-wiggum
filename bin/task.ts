@@ -3,6 +3,7 @@ import type { TaskStatus, TaskCategory } from "../src/types.js";
 import { inferCategory, prompt } from "../src/utils.js";
 import { TaskManager } from "../src/task-manager.js";
 import { TaskRepository } from "../src/task-repository.js";
+import { VERSION } from "./version.js";
 
 const args = process.argv.slice(2);
 const prdPathIndex = args.indexOf("--prd");
@@ -30,6 +31,7 @@ Commands:
   status         Show task summary
 
 Options:
+  --version, -v  Show version number and exit
   --prd <path>   Path to PRD file (default: ./plans/prd.json or PRD_PATH env var)
 
 Examples:
@@ -45,6 +47,11 @@ Environment:
   Uses PRD_PATH environment variable or --prd flag for custom location
   Default: ./plans/prd.json
   `);
+  process.exit(0);
+}
+
+if (command === "--version" || command === "-v") {
+  console.log(`task ${VERSION}`);
   process.exit(0);
 }
 

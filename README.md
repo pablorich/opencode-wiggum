@@ -4,17 +4,40 @@ Automated task completion using OpenCode and Bun. Wiggum iteratively completes t
 
 ## Installation
 
-### Global Installation (with Bun)
+### Quick Install (Recommended)
+
+```bash
+curl -fsSL https://github.com/pablorich/opencode-wiggum/releases/latest/download/install.sh | bash
+```
+
+This will download and install the latest version of Wiggum automatically.
+
+### Manual Install Options
+
+#### Option 1: Global Installation (with Bun)
 
 ```bash
 bun install -g
 ```
 
-This installs both `wiggum` and `task` commands globally.
+This installs both `wiggum` and `task` commands globally from npm registry.
 
-### Download Prebuilt Executable
+#### Option 2: Build and Install Locally
 
-Download the appropriate executable for your platform from the [releases](https://github.com/pablorich/wiggum-opencode/releases) page and add it to your PATH.
+For development or local use, you can build and install executables manually:
+
+```bash
+# From the wiggum project directory
+bun run build
+
+# Copy executables to global bin directory
+cp bin/wiggum ~/.bun/bin/wiggum
+cp bin/task ~/.bun/bin/task
+```
+
+#### Option 3: Download Prebuilt Executable
+
+Download appropriate executable for your platform from [releases](https://github.com/pablorich/opencode-wiggum/releases) page and add it to your PATH.
 
 ## Usage
 
@@ -39,7 +62,7 @@ wiggum 20
 Wiggum works in the current directory (like git). It:
 
 - Reads tasks from `plans/prd.json` (or custom path)
-- Shows the last 5 completed tasks for context
+- Shows last 5 completed tasks for context
 - Lists all pending tasks with no unresolved dependencies
 - Completes one task per iteration using OpenCode
 - Updates `progress.txt` with completion details
@@ -153,24 +176,52 @@ bun run lint
 bun run build
 ```
 
+## Creating Releases
+
+To create a new release:
+
+1. Update the version in `package.json`
+2. Build the binaries: `bun run build`
+3. Tag the release: `git tag v0.1.0`
+4. Push the tag: `git push --tags`
+
+The GitHub Actions workflow will automatically:
+- Build the binaries
+- Create a ZIP archive with `wiggum` and `task` executables
+- Upload `install.sh` and the ZIP archive to the release
+
+Alternatively, create a release manually:
+```bash
+# Build binaries
+bun run build
+
+# Create release archive
+cd bin
+zip -r ../wiggum-linux-x64.zip wiggum task
+cd ..
+
+# Upload to GitHub releases
+```
+
 ## How It Works
 
-1. **Wiggum Loop**:
+1. **Wiggum Loop:**
 
    - Iterates up to `max-iterations` times
    - Gets list of recently completed and ready tasks
    - Provides task list and AGENTS.md context to OpenCode
-   - OpenCode completes one task using the available tools
+   - OpenCode completes one task using available tools
    - Task is marked as completed, progress is logged, and git commit is created
    - Loop repeats with fresh session
 
-2. **Task Selection**:
+2. **Task Selection:**
 
    - Only tasks with status `pending` and all dependencies completed are shown
    - OpenCode chooses the highest priority available task
    - Progress is preserved between iterations via `progress.txt`
 
-3. **Safety**:
+3. **Safety:**
+
    - Each iteration is a fresh OpenCode session
    - OpenCode only completes ONE task per iteration
    - All changes are verified (typecheck, tests) before marking complete

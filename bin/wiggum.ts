@@ -2,6 +2,7 @@
 import { $ } from "bun";
 import { existsSync } from "fs";
 import { join } from "path";
+import { VERSION } from "./version.js";
 
 const args = process.argv.slice(2);
 
@@ -16,6 +17,10 @@ Arguments:
   prd-path         Optional path to prd.json file (default: ./plans/prd.json)
   max-iterations    Maximum number of iterations (default: 10)
 
+Options:
+  --version, -v    Show version number and exit
+  --help, -h       Show this help message and exit
+
 Examples:
   wiggum                           # Run with default settings
   wiggum ./my-prd.json              # Use custom PRD file
@@ -27,6 +32,11 @@ Environment:
   Looks for plans/prd.json by default
   Creates/updates progress.txt in current directory
   `);
+  process.exit(0);
+}
+
+if (args[0] === "--version" || args[0] === "-v") {
+  console.log(`wiggum ${VERSION}`);
   process.exit(0);
 }
 
