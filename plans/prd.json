@@ -5,43 +5,181 @@
       "id": "1",
       "priority": 1,
       "feature": "Initialize project structure",
-      "passes": true
+      "status": "completed",
+      "category": "infrastructure",
+      "createdAt": "2026-01-05T10:00:00Z",
+      "completedAt": "2026-01-05T10:00:00Z",
+      "completedBy": "manual",
+      "dependencies": [],
+      "notes": null
     },
     {
       "id": "2",
       "priority": 2,
       "feature": "Set up package.json with dependencies",
-      "passes": true
+      "status": "completed",
+      "category": "infrastructure",
+      "createdAt": "2026-01-05T10:00:00Z",
+      "completedAt": "2026-01-05T10:00:00Z",
+      "completedBy": "manual",
+      "dependencies": [],
+      "notes": null
     },
     {
       "id": "3",
       "priority": 2,
       "feature": "Create basic TypeScript configuration",
-      "passes": true
+      "status": "completed",
+      "category": "infrastructure",
+      "createdAt": "2026-01-05T10:00:00Z",
+      "completedAt": "2026-01-05T10:00:00Z",
+      "completedBy": "manual",
+      "dependencies": [],
+      "notes": null
     },
     {
-      "id": 4,
+      "id": "4",
       "priority": 1,
       "feature": "Configure the testing environment: Install Bun, setup 'bun test' with a sample test file, and configure 'bun x tsc --noEmit' for type checking.",
-      "passes": true
+      "status": "completed",
+      "category": "infrastructure",
+      "createdAt": "2026-01-05T10:00:00Z",
+      "completedAt": "2026-01-05T10:00:00Z",
+      "completedBy": "manual",
+      "dependencies": [],
+      "notes": null
     },
     {
-      "id": 5,
+      "id": "5",
       "priority": 2,
       "feature": "Create an AGENTS.md file that has a brief description of the project state and components meant to be read by an LLM, with the purpose to feed context more efficiently than by loading complete files.",
-      "passes": true
+      "status": "completed",
+      "category": "docs",
+      "createdAt": "2026-01-05T10:00:00Z",
+      "completedAt": "2026-01-05T10:00:00Z",
+      "completedBy": "manual",
+      "dependencies": [],
+      "notes": null
     },
     {
-      "id": 6,
+      "id": "6",
       "priority": 2,
       "feature": "Set up eslint and a precommit hook that runs the linter automatically",
-      "passes": true
+      "status": "completed",
+      "category": "infrastructure",
+      "createdAt": "2026-01-05T10:00:00Z",
+      "completedAt": "2026-01-05T10:00:00Z",
+      "completedBy": "manual",
+      "dependencies": [],
+      "notes": null
     },
     {
-      "id": 7,
+      "id": "7",
       "priority": 1,
       "feature": "Setup a gitignore file",
-      "passes": true
+      "status": "completed",
+      "category": "infrastructure",
+      "createdAt": "2026-01-05T10:00:00Z",
+      "completedAt": "2026-01-05T10:00:00Z",
+      "completedBy": "manual",
+      "dependencies": [],
+      "notes": null
+    },
+    {
+      "id": "8",
+      "priority": 2,
+      "feature": "Componentize task-cli.ts: Create TaskRepository class for data persistence (read/write operations on prd.json)",
+      "status": "pending",
+      "category": "refactor",
+      "createdAt": "2026-01-05T10:00:00Z",
+      "completedAt": null,
+      "completedBy": null,
+      "dependencies": [],
+      "notes": null
+    },
+    {
+      "id": "9",
+      "priority": 2,
+      "feature": "Componentize task-cli.ts: Create TaskManager class for business logic (CRUD operations, dependency validation, ID generation)",
+      "status": "pending",
+      "category": "refactor",
+      "createdAt": "2026-01-05T10:00:00Z",
+      "completedAt": null,
+      "completedBy": null,
+      "dependencies": ["8"],
+      "notes": null
+    },
+    {
+      "id": "10",
+      "priority": 2,
+      "feature": "Componentize task-cli.ts: Extract utility functions (inferCategory, prompt) into separate modules",
+      "status": "pending",
+      "category": "refactor",
+      "createdAt": "2026-01-05T10:00:00Z",
+      "completedAt": null,
+      "completedBy": null,
+      "dependencies": [],
+      "notes": null
+    },
+    {
+      "id": "11",
+      "priority": 3,
+      "feature": "Componentize task-cli.ts: Refactor CLI entry point to use new components (TaskRepository, TaskManager, utilities)",
+      "status": "pending",
+      "category": "refactor",
+      "createdAt": "2026-01-05T10:00:00Z",
+      "completedAt": null,
+      "completedBy": null,
+      "dependencies": ["8", "9", "10"],
+      "notes": null
+    },
+    {
+      "id": "12",
+      "priority": 2,
+      "feature": "Create tests for TaskRepository: readPrd, writePrd, and file operations",
+      "status": "pending",
+      "category": "test",
+      "createdAt": "2026-01-05T10:00:00Z",
+      "completedAt": null,
+      "completedBy": null,
+      "dependencies": ["8"],
+      "notes": null
+    },
+    {
+      "id": "13",
+      "priority": 2,
+      "feature": "Create tests for TaskManager: addTask, updateTask, completeTask, listTasks, deleteTask",
+      "status": "pending",
+      "category": "test",
+      "createdAt": "2026-01-05T10:00:00Z",
+      "completedAt": null,
+      "completedBy": null,
+      "dependencies": ["9"],
+      "notes": null
+    },
+    {
+      "id": "14",
+      "priority": 2,
+      "feature": "Create tests for utility functions: inferCategory, getNextId",
+      "status": "pending",
+      "category": "test",
+      "createdAt": "2026-01-05T10:00:00Z",
+      "completedAt": null,
+      "completedBy": null,
+      "dependencies": ["10"],
+      "notes": null
+    },
+    {
+      "id": "15",
+      "priority": 3,
+      "feature": "Create integration tests for CLI commands: add, update, list, complete, status with command-line argument parsing",
+      "status": "pending",
+      "category": "test",
+      "createdAt": "2026-01-05T10:00:00Z",
+      "completedAt": null,
+      "completedBy": null,
+      "dependencies": ["11"],
+      "notes": null
     }
   ]
 }

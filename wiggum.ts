@@ -20,11 +20,13 @@ async function runWiggum() {
     const prompt = `
       Context: @${PRD_PATH} @${LOG_PATH}
       Task:
-      1. Choose the highest priority task in ${PRD_PATH} where 'passes' is false.
+      1. Choose the highest priority task in ${PRD_PATH} where 'status' is not 'completed' and all dependencies are 'completed'.
       2. If it is the environment setup, perform it now (install deps, config files).
-      3. For any feature, verify using 'bun x tsc --noEmit' and 'bun test'.
+      3. For any feature, verify using 'bunx tsc --noEmit' and 'bun test'.
       4. If successful: 
-         - Update 'passes' to true in ${PRD_PATH}.
+         - Set 'status' to 'completed'.
+         - Set 'completedAt' to current ISO timestamp.
+         - Set 'completedBy' to 'opencode'.
          - Record details in ${LOG_PATH}.
          - Create a git commit.
       5. ONLY WORK ON ONE FEATURE PER TURN.
