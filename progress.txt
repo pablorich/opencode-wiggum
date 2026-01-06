@@ -3,3 +3,6 @@ Progress Log
 
 2025-01-05: Task 1 - Initialize project structure - COMPLETED
 - Created src/ and tests/ directories
+2025-01-05: Task 2 - Set up package.json with dependencies - COMPLETED
+- Created package.json with TypeScript dependency
+- Installed dependencies using bun install

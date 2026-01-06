@@ -6,9 +6,9 @@
       "passes": true
     },
     {
-      "id": "2", 
+      "id": "2",
       "description": "Set up package.json with dependencies",
-      "passes": false
+      "passes": true
     },
     {
       "id": "3",
