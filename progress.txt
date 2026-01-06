@@ -76,3 +76,17 @@ Progress Log
 - Tested getStatus() for summary statistics
 - Tested deleteTask() to remove tasks
 - Verified with bun test (33 pass, 0 fail)
+2025-01-06: Task 14 - Create tests for utility functions - COMPLETED
+- Created tests/utils.test.ts with 7 test cases
+- Tested inferCategory() function for all categories
+- Tested keyword matching at any position
+- Tested case insensitivity
+- Verified with bun test (40 pass, 0 fail)
+2025-01-06: Task 11 - Refactor CLI entry point - COMPLETED
+- Refactored src/task-cli.ts to use TaskManager
+- Removed direct file operations (readPrd, writePrd)
+- Removed duplicate utility functions
+- Simplified CLI functions to use TaskManager methods
+- Reduced code duplication and improved maintainability
+- Verified with bun x tsc --noEmit (no errors)
+- Verified with bun test (40 pass, 0 fail)

@@ -1,69 +1,35 @@
 #!/usr/bin/env bun
-import type { Task, TaskStatus, TaskCategory } from "./types.js";
+import type { TaskStatus, TaskCategory } from "./types.js";
 import { inferCategory, prompt } from "./utils.js";
+import { TaskManager } from "./task-manager.js";
 
-const PRD_PATH = "plans/prd.json";
-
-async function readPrd(): Promise<{ project: string; backlog: Task[] }> {
-  const file = Bun.file(PRD_PATH);
-  const text = await file.text();
-  return JSON.parse(text);
-}
-
-async function writePrd(prd: { project: string; backlog: Task[] }): Promise<void> {
-  await Bun.write(PRD_PATH, JSON.stringify(prd, null, 2));
-}
-
-function getNextId(tasks: Task[]): string {
-  const maxId = tasks.reduce((max, task) => {
-    const id = parseInt(task.id);
-    return id > max ? id : max;
-  }, 0);
-  return String(maxId + 1);
-}
+const manager = new TaskManager();
 
 async function addTask(): Promise<void> {
-  const prd = await readPrd();
-  
   console.log("Adding new task...");
   const feature = await prompt("Description: ");
   const priorityStr = await prompt("Priority (1-5): ");
   const priority = parseInt(priorityStr);
-  
+
   const categoryOptions: TaskCategory[] = ["infrastructure", "feature", "bugfix", "refactor", "docs"];
   console.log("Categories:", categoryOptions.join(", "));
   const categoryInput = await prompt(`Category (default: ${inferCategory(feature)}): `);
   const category: TaskCategory = categoryInput.trim() ? categoryInput.trim() as TaskCategory : inferCategory(feature);
-  
+
   const depsInput = await prompt("Dependencies (comma-separated task IDs, or empty): ");
   const dependencies = depsInput.trim() ? depsInput.split(",").map(d => d.trim()) : [];
-  
+
   const notes = await prompt("Notes (optional, or empty): ") || null;
-  
-  const now = new Date().toISOString();
-  const newTask: Task = {
-    id: getNextId(prd.backlog),
-    priority,
-    feature,
-    status: "pending",
-    category,
-    createdAt: now,
-    completedAt: null,
-    completedBy: "manual",
-    dependencies,
-    notes
-  };
-  
-  prd.backlog.push(newTask);
-  await writePrd(prd);
+
+  const newTask = await manager.addTask(feature, priority, category, dependencies, notes);
   console.log(`✅ Task ${newTask.id} added successfully.`);
 }
 
 async function listTasks(): Promise<void> {
   const args = process.argv.slice(3);
-  let filterStatus: TaskStatus | null = null;
-  let filterCategory: TaskCategory | null = null;
-  
+  let filterStatus: TaskStatus | undefined;
+  let filterCategory: TaskCategory | undefined;
+
   for (let i = 0; i < args.length; i++) {
     if (args[i] === "--status" && args[i + 1]) {
       filterStatus = args[i + 1] as TaskStatus;
@@ -74,26 +40,20 @@ async function listTasks(): Promise<void> {
       i++;
     }
   }
-  
-  const prd = await readPrd();
-  let tasks = prd.backlog;
-  
-  if (filterStatus) tasks = tasks.filter(t => t.status === filterStatus);
-  if (filterCategory) tasks = tasks.filter(t => t.category === filterCategory);
-  
-  tasks.sort((a, b) => a.priority - b.priority);
-  
+
+  const tasks = await manager.listTasks(filterStatus, filterCategory);
+
   if (tasks.length === 0) {
     console.log("No tasks found.");
     return;
   }
-  
+
   const statusEmoji = {
     pending: "⏳",
     in_progress: "🔄",
     completed: "✅"
   };
-  
+
   for (const task of tasks) {
     const completed = task.completedAt ? ` (completed: ${new Date(task.completedAt).toLocaleDateString()})` : "";
     const deps = task.dependencies.length > 0 ? ` [deps: ${task.dependencies.join(", ")}]` : "";
@@ -103,112 +63,74 @@ async function listTasks(): Promise<void> {
 }
 
 async function updateTask(taskId: string): Promise<void> {
-  const prd = await readPrd();
-  const task = prd.backlog.find(t => t.id === taskId);
-  
+  const tasks = await manager.listTasks();
+  const task = tasks.find(t => t.id === taskId);
+
   if (!task) {
     console.error(`❌ Task #${taskId} not found.`);
     process.exit(1);
   }
-  
+
   console.log(`Updating task #${taskId}`);
   console.log(`Current: ${task.feature}`);
   console.log(`Status: ${task.status} | Category: ${task.category} | Priority: ${task.priority}`);
-  
-  const feature = await prompt(`Description (current: ${task.feature}): `) || task.feature;
+
+  const feature = await prompt(`Description (current: ${task.feature}): `);
   const priorityStr = await prompt(`Priority (current: ${task.priority}): `);
   const priority = priorityStr.trim() ? parseInt(priorityStr) : task.priority;
-  
+
   const categoryOptions: TaskCategory[] = ["infrastructure", "feature", "bugfix", "refactor", "docs"];
   console.log("Categories:", categoryOptions.join(", "));
   const categoryInput = await prompt(`Category (current: ${task.category}): `);
   const category: TaskCategory = categoryInput.trim() ? categoryInput.trim() as TaskCategory : task.category;
-  
+
   const statusOptions: TaskStatus[] = ["pending", "in_progress", "completed"];
   console.log("Status:", statusOptions.join(", "));
   const statusInput = await prompt(`Status (current: ${task.status}): `);
-  let status: TaskStatus = statusInput.trim() ? statusInput.trim() as TaskStatus : task.status;
-  
-  let completedAt = task.completedAt;
-  let completedBy = task.completedBy;
-  
-  if (status === "completed" && task.status !== "completed") {
-    completedAt = new Date().toISOString();
-    completedBy = "manual";
-  } else if (status !== "completed") {
-    completedAt = null;
-    completedBy = null;
-  }
-  
+  const status = statusInput.trim() ? statusInput.trim() as TaskStatus : task.status;
+
   const depsInput = await prompt(`Dependencies (current: ${task.dependencies.join(", ") || "none"}): `);
   const dependencies = depsInput.trim() ? depsInput.split(",").map(d => d.trim()) : task.dependencies;
-  
+
   const notesInput = await prompt(`Notes (current: ${task.notes || "none"}): `);
   const notes = notesInput.trim() ? notesInput : task.notes;
-  
-  Object.assign(task, {
-    feature,
-    priority,
-    category,
-    status,
-    completedAt,
-    completedBy,
-    dependencies,
-    notes
-  });
-  
-  await writePrd(prd);
-  console.log(`✅ Task #${taskId} updated successfully.`);
+
+  const updates: Parameters<typeof manager.updateTask>[1] = {};
+  if (feature) updates.feature = feature;
+  if (!isNaN(priority)) updates.priority = priority;
+  if (category) updates.category = category;
+  if (status) updates.status = status;
+  if (depsInput.trim()) updates.dependencies = dependencies;
+  if (notesInput.trim()) updates.notes = notes;
+
+  const updated = await manager.updateTask(taskId, updates);
+  if (updated) {
+    console.log(`✅ Task #${taskId} updated successfully.`);
+  } else {
+    console.error(`❌ Failed to update task #${taskId}.`);
+  }
 }
 
 async function completeTask(taskId: string): Promise<void> {
-  const prd = await readPrd();
-  const task = prd.backlog.find(t => t.id === taskId);
-  
-  if (!task) {
-    console.error(`❌ Task #${taskId} not found.`);
+  const result = await manager.completeTask(taskId);
+
+  if (!result) {
+    console.error(`❌ Failed to complete task #${taskId}. Task not found or dependencies not satisfied.`);
     process.exit(1);
   }
-  
-  for (const depId of task.dependencies) {
-    const dep = prd.backlog.find(t => t.id === depId);
-    if (!dep) {
-      console.error(`❌ Dependency #${depId} does not exist.`);
-      process.exit(1);
-    }
-    if (dep.status !== "completed") {
-      console.error(`❌ Dependency #${depId} is not completed.`);
-      process.exit(1);
-    }
-  }
-  
-  task.status = "completed";
-  task.completedAt = new Date().toISOString();
-  task.completedBy = "manual";
-  
-  await writePrd(prd);
+
   console.log(`✅ Task #${taskId} marked as completed.`);
 }
 
 async function showStatus(): Promise<void> {
-  const prd = await readPrd();
-  const tasks = prd.backlog;
-  
-  const pending = tasks.filter(t => t.status === "pending").length;
-  const inProgress = tasks.filter(t => t.status === "in_progress").length;
-  const completed = tasks.filter(t => t.status === "completed").length;
-  
+  const status = await manager.getStatus();
+
   console.log(`\n📊 Task Summary`);
-  console.log(`Total: ${tasks.length} | Pending: ${pending} | In Progress: ${inProgress} | Completed: ${completed}`);
-  
-  const completedTasks = tasks
-    .filter(t => t.status === "completed" && t.completedAt)
-    .sort((a, b) => new Date(b.completedAt!).getTime() - new Date(a.completedAt!).getTime())
-    .slice(0, 5);
-  
-  if (completedTasks.length > 0) {
+  console.log(`Total: ${status.total} | Pending: ${status.pending} | In Progress: ${status.inProgress} | Completed: ${status.completed}`);
+
+  if (status.recentlyCompleted.length > 0) {
     console.log(`\n🕐 Recently completed:`);
-    for (const task of completedTasks) {
+    for (const task of status.recentlyCompleted) {
       console.log(`  #${task.id} - ${task.feature} (${new Date(task.completedAt!).toLocaleDateString()})`);
     }
   }
