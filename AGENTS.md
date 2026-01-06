@@ -1,6 +1,6 @@
 # Project Overview
 
-NaturalScrapper is a web scraping tool built with TypeScript and Bun, designed to extract structured data from web pages efficiently.
+This is a tool made with Typescript, bun, and opencode, to iteratively complete tasks with opencode
 
 ## Project State
 
@@ -27,7 +27,7 @@ Type declarations for Bun test globals (test, expect, describe) to provide TypeS
 Defines project dependencies and scripts:
 
 - `bun test`: Run test suite
-- `bun x tsc --noEmit`: Type checking
+- `bun run typecheck`: Type checking
 
 ### `tsconfig.json`
 

@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach } from "bun:test";
+import { describe, test, expect, beforeEach, afterEach } from "bun:test";
 import { TaskManager } from "../src/task-manager";
 import { TaskRepository } from "../src/task-repository";
 import { unlinkSync, existsSync, writeFileSync } from "fs";
@@ -34,6 +34,12 @@ describe("TaskManager", () => {
       unlinkSync(TEST_PRD_PATH);
     }
     writeFileSync(TEST_PRD_PATH, JSON.stringify(INITIAL_PRD, null, 2));
+  });
+
+  afterEach(() => {
+    if (existsSync(TEST_PRD_PATH)) {
+      unlinkSync(TEST_PRD_PATH);
+    }
   });
 
   test("addTask should create new task", async () => {

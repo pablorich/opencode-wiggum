@@ -192,6 +192,30 @@
       "completedBy": "opencode",
       "dependencies": ["10"],
       "notes": "Replaced manual stdin handling with Node.js readline.question() API for proper Enter key and backspace support"
+    },
+    {
+      "id": "17",
+      "priority": 2,
+      "feature": "Fix tests that create files to properly clean up after running: Implement cleanup hooks in test setup/teardown to remove temporary files created during test execution",
+      "status": "completed",
+      "category": "test",
+      "createdAt": "2026-01-06T02:01:00Z",
+      "completedAt": "2026-01-06T02:10:00Z",
+      "completedBy": "opencode",
+      "dependencies": [],
+      "notes": "Added afterEach hooks to task-repository.test.ts, task-manager.test.ts, and task-cli-integration.test.ts to clean up temporary JSON files"
+    },
+    {
+      "id": "18",
+      "priority": 1,
+      "feature": "Ensure all scripts and tests work on different operating systems: Add cross-platform compatibility testing and fix any Windows/Linux/macOS-specific path handling issues",
+      "status": "pending",
+      "category": "infrastructure",
+      "createdAt": "2026-01-06T02:02:00Z",
+      "completedAt": null,
+      "completedBy": null,
+      "dependencies": [],
+      "notes": null
     }
   ]
 }

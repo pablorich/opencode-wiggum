@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach } from "bun:test";
+import { describe, test, expect, beforeEach, afterEach } from "bun:test";
 import { spawn } from "child_process";
 import { writeFileSync, unlinkSync, existsSync } from "fs";
 import { join } from "path";
@@ -41,6 +41,12 @@ describe("CLI Integration Tests", () => {
       unlinkSync(TEST_PRD_PATH);
     }
     writeFileSync(TEST_PRD_PATH, JSON.stringify(INITIAL_PRD, null, 2));
+  });
+
+  afterEach(() => {
+    if (existsSync(TEST_PRD_PATH)) {
+      unlinkSync(TEST_PRD_PATH);
+    }
   });
 
   function runCli(args: string[]): Promise<{ stdout: string; stderr: string; exitCode: number }> {

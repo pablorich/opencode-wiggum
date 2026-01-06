@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach } from "bun:test";
+import { describe, test, expect, beforeEach, afterEach } from "bun:test";
 import { TaskRepository } from "../src/task-repository";
 import { unlinkSync, existsSync, writeFileSync } from "fs";
 import { join } from "path";
@@ -28,6 +28,12 @@ describe("TaskRepository", () => {
 
   beforeEach(() => {
     repository = new TaskRepository(TEST_PRD_PATH);
+    if (existsSync(TEST_PRD_PATH)) {
+      unlinkSync(TEST_PRD_PATH);
+    }
+  });
+
+  afterEach(() => {
     if (existsSync(TEST_PRD_PATH)) {
       unlinkSync(TEST_PRD_PATH);
     }
