@@ -165,4 +165,13 @@ export class TaskManager {
 
     return true;
   }
+
+  async getReadyTasks(): Promise<Task[]> {
+    const prd = await this.repository.readPrd();
+    const completedIds = new Set(prd.backlog.filter(t => t.status === "completed").map(t => t.id));
+
+    return prd.backlog
+      .filter(t => t.status === "pending" && t.dependencies.every(depId => completedIds.has(depId)))
+      .sort((a, b) => a.priority - b.priority);
+  }
 }

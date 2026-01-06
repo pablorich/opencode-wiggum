@@ -134,7 +134,132 @@ describe("CLI Integration Tests", () => {
     const emptyPrd = { project: "Empty", backlog: [] };
     writeFileSync(TEST_PRD_PATH, JSON.stringify(emptyPrd, null, 2));
     const result = await runCli(["list"]);
-    expect(result.stdout).toContain("No tasks found.");
+    expect(result.stdout).toContain("No tasks found");
+    expect(result.exitCode).toBe(0);
+  });
+
+  test("list default should show recently completed and ready tasks", async () => {
+    const prdWithReady = {
+      project: "Test Project",
+      backlog: [
+        {
+          id: "1",
+          priority: 2,
+          feature: "Completed task",
+          status: "completed" as const,
+          category: "feature" as const,
+          createdAt: "2026-01-05T10:00:00Z",
+          completedAt: "2026-01-05T11:00:00Z",
+          completedBy: "manual",
+          dependencies: [],
+          notes: null
+        },
+        {
+          id: "2",
+          priority: 1,
+          feature: "Ready task",
+          status: "pending" as const,
+          category: "feature" as const,
+          createdAt: "2026-01-05T10:00:00Z",
+          completedAt: null,
+          completedBy: null,
+          dependencies: [],
+          notes: null
+        },
+        {
+          id: "3",
+          priority: 3,
+          feature: "Blocked task",
+          status: "pending" as const,
+          category: "feature" as const,
+          createdAt: "2026-01-05T10:00:00Z",
+          completedAt: null,
+          completedBy: null,
+          dependencies: ["999"],
+          notes: null
+        }
+      ]
+    };
+    writeFileSync(TEST_PRD_PATH, JSON.stringify(prdWithReady, null, 2));
+
+    const result = await runCli(["list"]);
+    expect(result.stdout).toContain("Recently completed");
+    expect(result.stdout).toContain("Completed task");
+    expect(result.stdout).toContain("Available tasks");
+    expect(result.stdout).toContain("Ready task");
+    expect(result.stdout).not.toContain("Blocked task");
+    expect(result.exitCode).toBe(0);
+  });
+
+  test("list --all should show all tasks", async () => {
+    const result = await runCli(["list", "--all"]);
+    expect(result.stdout).toContain("Test task");
+    expect(result.stdout).toContain("Another task");
+    expect(result.stdout).not.toContain("Recently completed");
+    expect(result.stdout).not.toContain("Available tasks");
+    expect(result.exitCode).toBe(0);
+  });
+
+  test("list --all with status filter should work", async () => {
+    const result = await runCli(["list", "--all", "--status", "pending"]);
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("Test task");
+    expect(result.stdout).not.toContain("Another task");
+    expect(result.stdout).not.toContain("Recently completed");
+    expect(result.stdout).not.toContain("Available tasks");
+  });
+
+  test("list default should prioritize ready tasks by priority", async () => {
+    const prdWithPriorities = {
+      project: "Test Project",
+      backlog: [
+        {
+          id: "1",
+          priority: 3,
+          feature: "Low priority ready",
+          status: "pending" as const,
+          category: "feature" as const,
+          createdAt: "2026-01-05T10:00:00Z",
+          completedAt: null,
+          completedBy: null,
+          dependencies: [],
+          notes: null
+        },
+        {
+          id: "2",
+          priority: 1,
+          feature: "High priority ready",
+          status: "pending" as const,
+          category: "feature" as const,
+          createdAt: "2026-01-05T10:00:00Z",
+          completedAt: null,
+          completedBy: null,
+          dependencies: [],
+          notes: null
+        },
+        {
+          id: "3",
+          priority: 2,
+          feature: "Medium priority ready",
+          status: "pending" as const,
+          category: "feature" as const,
+          createdAt: "2026-01-05T10:00:00Z",
+          completedAt: null,
+          completedBy: null,
+          dependencies: [],
+          notes: null
+        }
+      ]
+    };
+    writeFileSync(TEST_PRD_PATH, JSON.stringify(prdWithPriorities, null, 2));
+
+    const result = await runCli(["list"]);
+    const lines = result.stdout.split("\n");
+    const readyLines = lines.filter(line => line.includes("ready"));
+    
+    expect(readyLines[0]).toContain("High priority ready");
+    expect(readyLines[1]).toContain("Medium priority ready");
+    expect(readyLines[2]).toContain("Low priority ready");
     expect(result.exitCode).toBe(0);
   });
 });

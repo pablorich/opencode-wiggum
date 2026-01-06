@@ -31,8 +31,12 @@ async function listTasks(): Promise<void> {
   const args = process.argv.slice(3);
   let filterStatus: TaskStatus | undefined;
   let filterCategory: TaskCategory | undefined;
+  let showAll = false;
 
   for (let i = 0; i < args.length; i++) {
+    if (args[i] === "--all") {
+      showAll = true;
+    }
     if (args[i] === "--status" && args[i + 1]) {
       filterStatus = args[i + 1] as TaskStatus;
       i++;
@@ -50,17 +54,40 @@ async function listTasks(): Promise<void> {
     return;
   }
 
-  const statusEmoji = {
-    pending: "⏳",
-    in_progress: "🔄",
-    completed: "✅"
-  };
+  if (showAll || filterStatus || filterCategory) {
+    const statusEmoji = {
+      pending: "⏳",
+      in_progress: "🔄",
+      completed: "✅"
+    };
 
-  for (const task of tasks) {
-    const completed = task.completedAt ? ` (completed: ${new Date(task.completedAt).toLocaleDateString()})` : "";
-    const deps = task.dependencies.length > 0 ? ` [deps: ${task.dependencies.join(", ")}]` : "";
-    console.log(`${statusEmoji[task.status]} #${task.id} (P${task.priority}) [${task.category}] ${task.feature}${completed}${deps}`);
-    if (task.notes) console.log(`   └─ ${task.notes}`);
+    for (const task of tasks) {
+      const completed = task.completedAt ? ` (completed: ${new Date(task.completedAt).toLocaleDateString()})` : "";
+      const deps = task.dependencies.length > 0 ? ` [deps: ${task.dependencies.join(", ")}]` : "";
+      console.log(`${statusEmoji[task.status]} #${task.id} (P${task.priority}) [${task.category}] ${task.feature}${completed}${deps}`);
+      if (task.notes) console.log(`   └─ ${task.notes}`);
+    }
+  } else {
+    const status = await manager.getStatus();
+    const readyTasks = await manager.getReadyTasks();
+
+    if (status.recentlyCompleted.length > 0) {
+      console.log("\n🕐 Recently completed:");
+      for (const task of status.recentlyCompleted) {
+        console.log(`  ✅ #${task.id} (P${task.priority}) [${task.category}] ${task.feature}`);
+      }
+    }
+
+    if (readyTasks.length > 0) {
+      console.log("\n📋 Available tasks (no pending dependencies):");
+      for (const task of readyTasks) {
+        const deps = task.dependencies.length > 0 ? ` [deps: ${task.dependencies.join(", ")}]` : "";
+        console.log(`  ⏳ #${task.id} (P${task.priority}) [${task.category}] ${task.feature}${deps}`);
+        if (task.notes) console.log(`     └─ ${task.notes}`);
+      }
+    } else {
+      console.log("\n📋 No available tasks (all pending tasks have unresolved dependencies)");
+    }
   }
 }
 
@@ -171,7 +198,8 @@ Usage: bun run task <command>
 
 Commands:
   add       Add a new task
-  list      List all tasks (options: --status <pending|in_progress|completed> --category <type>)
+  list      List available tasks (default: recently completed + ready tasks, --all: show all)
+            Options: --all, --status <pending|in_progress|completed> --category <type>
   update    Update a task (usage: bun run task update <id>)
   complete  Mark a task as complete (usage: bun run task complete <id>)
   status    Show task summary

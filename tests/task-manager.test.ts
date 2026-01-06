@@ -8,20 +8,7 @@ const TEST_PRD_PATH = join(import.meta.dir, "test-task-manager.json");
 
 const INITIAL_PRD = {
   project: "Test Project",
-  backlog: [
-    {
-      id: "1",
-      priority: 1,
-      feature: "Existing task",
-      status: "pending" as const,
-      category: "feature" as const,
-      createdAt: "2026-01-05T10:00:00Z",
-      completedAt: null,
-      completedBy: null,
-      dependencies: [],
-      notes: null
-    }
-  ]
+  backlog: []
 };
 
 describe("TaskManager", () => {
@@ -45,7 +32,7 @@ describe("TaskManager", () => {
   test("addTask should create new task", async () => {
     const task = await manager.addTask("New task", 2, "feature");
 
-    expect(task.id).toBe("2");
+    expect(task.id).toBe("1");
     expect(task.feature).toBe("New task");
     expect(task.priority).toBe(2);
     expect(task.status).toBe("pending");
@@ -58,11 +45,12 @@ describe("TaskManager", () => {
     const task1 = await manager.addTask("Task 1", 1, "feature");
     const task2 = await manager.addTask("Task 2", 1, "feature");
 
-    expect(task1.id).toBe("2");
-    expect(task2.id).toBe("3");
+    expect(task1.id).toBe("1");
+    expect(task2.id).toBe("2");
   });
 
   test("listTasks should return all tasks sorted by priority", async () => {
+    await manager.addTask("Medium priority", 2, "feature");
     await manager.addTask("Low priority", 3, "feature");
     await manager.addTask("High priority", 1, "feature");
 
@@ -70,11 +58,12 @@ describe("TaskManager", () => {
 
     expect(tasks).toHaveLength(3);
     expect(tasks[0].priority).toBe(1);
-    expect(tasks[1].priority).toBe(1);
+    expect(tasks[1].priority).toBe(2);
     expect(tasks[2].priority).toBe(3);
   });
 
   test("listTasks should filter by status", async () => {
+    await manager.addTask("Pending task", 1, "feature");
     const task = await manager.addTask("New task", 2, "feature");
     await manager.completeTask(task.id);
 
@@ -86,8 +75,9 @@ describe("TaskManager", () => {
   });
 
   test("listTasks should filter by category", async () => {
-    await manager.addTask("Feature task", 2, "feature");
-    await manager.addTask("Bug task", 1, "bugfix");
+    await manager.addTask("Feature task 1", 1, "feature");
+    await manager.addTask("Feature task 2", 2, "feature");
+    await manager.addTask("Bug task", 3, "bugfix");
 
     const featureTasks = await manager.listTasks(undefined, "feature");
     const bugfixTasks = await manager.listTasks(undefined, "bugfix");
@@ -181,8 +171,8 @@ describe("TaskManager", () => {
 
     const status = await manager.getStatus();
 
-    expect(status.total).toBe(3);
-    expect(status.pending).toBe(2);
+    expect(status.total).toBe(2);
+    expect(status.pending).toBe(1);
     expect(status.completed).toBe(1);
   });
 
@@ -209,5 +199,99 @@ describe("TaskManager", () => {
   test("deleteTask should return false for non-existent task", async () => {
     const result = await manager.deleteTask("999");
     expect(result).toBe(false);
+  });
+
+  test("getReadyTasks should return tasks with no dependencies", async () => {
+    const ready1 = await manager.addTask("Ready task 1", 2, "feature");
+    const ready2 = await manager.addTask("Ready task 2", 1, "feature");
+
+    const readyTasks = await manager.getReadyTasks();
+
+    expect(readyTasks).toHaveLength(2);
+    expect(readyTasks.map(t => t.id)).toContain(ready1.id);
+    expect(readyTasks.map(t => t.id)).toContain(ready2.id);
+  });
+
+  test("getReadyTasks should sort by priority", async () => {
+    await manager.addTask("Low priority", 3, "feature");
+    await manager.addTask("High priority", 1, "feature");
+    await manager.addTask("Medium priority", 2, "feature");
+
+    const readyTasks = await manager.getReadyTasks();
+
+    expect(readyTasks[0].priority).toBe(1);
+    expect(readyTasks[1].priority).toBe(2);
+    expect(readyTasks[2].priority).toBe(3);
+  });
+
+  test("getReadyTasks should filter out tasks with unmet dependencies", async () => {
+    const dep = await manager.addTask("Dependency", 1, "feature");
+    await manager.addTask("Task with unmet deps", 2, "feature", [dep.id]);
+
+    const readyTasks = await manager.getReadyTasks();
+
+    expect(readyTasks).toHaveLength(1);
+    expect(readyTasks[0].id).toBe(dep.id);
+  });
+
+  test("getReadyTasks should include tasks with met dependencies", async () => {
+    const dep = await manager.addTask("Dependency", 1, "feature");
+    const task = await manager.addTask("Task with met deps", 2, "feature", [dep.id]);
+
+    await manager.completeTask(dep.id);
+
+    const readyTasks = await manager.getReadyTasks();
+
+    expect(readyTasks).toHaveLength(1);
+    expect(readyTasks[0].id).toBe(task.id);
+  });
+
+  test("getReadyTasks should filter out completed tasks", async () => {
+    const completed = await manager.addTask("Completed task", 1, "feature");
+    const pending = await manager.addTask("Pending task", 2, "feature");
+
+    await manager.completeTask(completed.id);
+
+    const readyTasks = await manager.getReadyTasks();
+
+    expect(readyTasks).toHaveLength(1);
+    expect(readyTasks[0].id).toBe(pending.id);
+  });
+
+  test("getReadyTasks should handle complex dependency chains", async () => {
+    const a = await manager.addTask("Task A", 1, "feature");
+    const b = await manager.addTask("Task B", 2, "feature", [a.id]);
+    const c = await manager.addTask("Task C", 3, "feature", [b.id]);
+
+    const readyTasks = await manager.getReadyTasks();
+    expect(readyTasks.map(t => t.id)).toEqual([a.id]);
+
+    await manager.completeTask(a.id);
+    const readyTasks2 = await manager.getReadyTasks();
+    expect(readyTasks2.map(t => t.id)).toEqual([b.id]);
+
+    await manager.completeTask(b.id);
+    const readyTasks3 = await manager.getReadyTasks();
+    expect(readyTasks3.map(t => t.id)).toEqual([c.id]);
+  });
+
+  test("getReadyTasks should handle multiple dependencies", async () => {
+    const dep1 = await manager.addTask("Dependency 1", 1, "feature");
+    const dep2 = await manager.addTask("Dependency 2", 2, "feature");
+    await manager.addTask("Task with multiple deps", 3, "feature", [dep1.id, dep2.id]);
+
+    const readyTasks = await manager.getReadyTasks();
+    expect(readyTasks.map(t => t.id)).toEqual([dep1.id, dep2.id]);
+  });
+
+  test("getReadyTasks should return empty array when no tasks are ready", async () => {
+    const task1 = await manager.addTask("Task 1", 1, "feature");
+    const task2 = await manager.addTask("Task 2", 2, "feature", ["999"]);
+    await manager.addTask("Task 3", 3, "feature", [task1.id, task2.id]);
+
+    const readyTasks = await manager.getReadyTasks();
+
+    expect(readyTasks).toHaveLength(1);
+    expect(readyTasks[0].id).toBe(task1.id);
   });
 });
