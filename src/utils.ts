@@ -1,3 +1,4 @@
+import readline from "node:readline";
 import type { TaskCategory } from "./types.js";
 
 export function inferCategory(description: string): TaskCategory {
@@ -18,11 +19,14 @@ export function inferCategory(description: string): TaskCategory {
 }
 
 export function prompt(question: string): Promise<string> {
-  process.stdout.write(question);
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
   return new Promise((resolve) => {
-    const stdin = process.stdin;
-    const data: string[] = [];
-    stdin.on("data", (chunk) => data.push(chunk.toString()));
-    stdin.once("end", () => resolve(data.join("").trim()));
+    rl.question(question, (answer) => {
+      rl.close();
+      resolve(answer);
+    });
   });
 }

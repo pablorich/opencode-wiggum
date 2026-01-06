@@ -180,6 +180,18 @@
       "completedBy": "opencode",
       "dependencies": ["11"],
       "notes": null
+    },
+    {
+      "id": "16",
+      "priority": 1,
+      "feature": "Fix broken prompt function in src/utils.ts by replacing the manual stdin 'end' event listener with Node.js readline.question() API to properly handle Enter key submission and backspace/delete editing",
+      "status": "completed",
+      "category": "bugfix",
+      "createdAt": "2026-01-05T12:00:00Z",
+      "completedAt": "2026-01-05T13:00:00Z",
+      "completedBy": "opencode",
+      "dependencies": ["10"],
+      "notes": "Replaced manual stdin handling with Node.js readline.question() API for proper Enter key and backspace support"
     }
   ]
 }

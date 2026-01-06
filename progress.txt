@@ -98,3 +98,10 @@ Progress Log
 - Tested help command
 - Added PRD_PATH environment variable support to CLI
 - Verified with bun test (49 pass, 0 fail)
+2025-01-06: Task 16 - Fix broken prompt function - COMPLETED
+- Replaced manual stdin 'end' event listener with Node.js readline.question() API
+- Now properly handles Enter key submission
+- Supports backspace/delete editing of typed text
+- Imported readline from node:readline
+- Verified with bun x tsc --noEmit (no errors)
+- Verified with bun test (49 pass, 0 fail)
