@@ -1,0 +1,249 @@
+{
+  "project": "Bun Project",
+  "backlog": [
+    {
+      "id": "1",
+      "priority": 1,
+      "feature": "Initialize project structure",
+      "status": "completed",
+      "category": "infrastructure",
+      "createdAt": "2026-01-05T10:00:00Z",
+      "completedAt": "2026-01-05T10:00:00Z",
+      "completedBy": "manual",
+      "dependencies": [],
+      "notes": null
+    },
+    {
+      "id": "2",
+      "priority": 2,
+      "feature": "Set up package.json with dependencies",
+      "status": "completed",
+      "category": "infrastructure",
+      "createdAt": "2026-01-05T10:00:00Z",
+      "completedAt": "2026-01-05T10:00:00Z",
+      "completedBy": "manual",
+      "dependencies": [],
+      "notes": null
+    },
+    {
+      "id": "3",
+      "priority": 2,
+      "feature": "Create basic TypeScript configuration",
+      "status": "completed",
+      "category": "infrastructure",
+      "createdAt": "2026-01-05T10:00:00Z",
+      "completedAt": "2026-01-05T10:00:00Z",
+      "completedBy": "manual",
+      "dependencies": [],
+      "notes": null
+    },
+    {
+      "id": "4",
+      "priority": 1,
+      "feature": "Configure the testing environment: Install Bun, setup 'bun test' with a sample test file, and configure 'bun x tsc --noEmit' for type checking.",
+      "status": "completed",
+      "category": "infrastructure",
+      "createdAt": "2026-01-05T10:00:00Z",
+      "completedAt": "2026-01-05T10:00:00Z",
+      "completedBy": "manual",
+      "dependencies": [],
+      "notes": null
+    },
+    {
+      "id": "5",
+      "priority": 2,
+      "feature": "Create an AGENTS.md file that has a brief description of the project state and components meant to be read by an LLM, with the purpose to feed context more efficiently than by loading complete files.",
+      "status": "completed",
+      "category": "docs",
+      "createdAt": "2026-01-05T10:00:00Z",
+      "completedAt": "2026-01-05T10:00:00Z",
+      "completedBy": "manual",
+      "dependencies": [],
+      "notes": null
+    },
+    {
+      "id": "6",
+      "priority": 2,
+      "feature": "Set up eslint and a precommit hook that runs the linter automatically",
+      "status": "completed",
+      "category": "infrastructure",
+      "createdAt": "2026-01-05T10:00:00Z",
+      "completedAt": "2026-01-05T10:00:00Z",
+      "completedBy": "manual",
+      "dependencies": [],
+      "notes": null
+    },
+    {
+      "id": "7",
+      "priority": 1,
+      "feature": "Setup a gitignore file",
+      "status": "completed",
+      "category": "infrastructure",
+      "createdAt": "2026-01-05T10:00:00Z",
+      "completedAt": "2026-01-05T10:00:00Z",
+      "completedBy": "manual",
+      "dependencies": [],
+      "notes": null
+    },
+    {
+      "id": "8",
+      "priority": 2,
+      "feature": "Componentize task-cli.ts: Create TaskRepository class for data persistence (read/write operations on prd.json)",
+      "status": "completed",
+      "category": "refactor",
+      "createdAt": "2026-01-05T10:00:00Z",
+      "completedAt": "2026-01-05T10:00:00Z",
+      "completedBy": "opencode",
+      "dependencies": [],
+      "notes": null
+    },
+    {
+      "id": "9",
+      "priority": 2,
+      "feature": "Componentize task-cli.ts: Create TaskManager class for business logic (CRUD operations, dependency validation, ID generation)",
+      "status": "completed",
+      "category": "refactor",
+      "createdAt": "2026-01-05T10:00:00Z",
+      "completedAt": "2026-01-05T10:30:00Z",
+      "completedBy": "opencode",
+      "dependencies": [
+        "8"
+      ],
+      "notes": null
+    },
+    {
+      "id": "10",
+      "priority": 2,
+      "feature": "Componentize task-cli.ts: Extract utility functions (inferCategory, prompt) into separate modules",
+      "status": "completed",
+      "category": "refactor",
+      "createdAt": "2026-01-05T10:00:00Z",
+      "completedAt": "2026-01-05T10:35:00Z",
+      "completedBy": "opencode",
+      "dependencies": [],
+      "notes": null
+    },
+    {
+      "id": "11",
+      "priority": 3,
+      "feature": "Componentize task-cli.ts: Refactor CLI entry point to use new components (TaskRepository, TaskManager, utilities)",
+      "status": "completed",
+      "category": "refactor",
+      "createdAt": "2026-01-05T10:00:00Z",
+      "completedAt": "2026-01-05T11:00:00Z",
+      "completedBy": "opencode",
+      "dependencies": [
+        "8",
+        "9",
+        "10"
+      ],
+      "notes": null
+    },
+    {
+      "id": "12",
+      "priority": 2,
+      "feature": "Create tests for TaskRepository: readPrd, writePrd, and file operations",
+      "status": "completed",
+      "category": "test",
+      "createdAt": "2026-01-05T10:00:00Z",
+      "completedAt": "2026-01-05T10:40:00Z",
+      "completedBy": "opencode",
+      "dependencies": [
+        "8"
+      ],
+      "notes": null
+    },
+    {
+      "id": "13",
+      "priority": 2,
+      "feature": "Create tests for TaskManager: addTask, updateTask, completeTask, listTasks, deleteTask",
+      "status": "completed",
+      "category": "test",
+      "createdAt": "2026-01-05T10:00:00Z",
+      "completedAt": "2026-01-05T10:45:00Z",
+      "completedBy": "opencode",
+      "dependencies": [
+        "9"
+      ],
+      "notes": null
+    },
+    {
+      "id": "14",
+      "priority": 2,
+      "feature": "Create tests for utility functions: inferCategory, getNextId",
+      "status": "completed",
+      "category": "test",
+      "createdAt": "2026-01-05T10:00:00Z",
+      "completedAt": "2026-01-05T10:50:00Z",
+      "completedBy": "opencode",
+      "dependencies": [
+        "10"
+      ],
+      "notes": null
+    },
+    {
+      "id": "15",
+      "priority": 3,
+      "feature": "Create integration tests for CLI commands: add, update, list, complete, status with command-line argument parsing",
+      "status": "completed",
+      "category": "test",
+      "createdAt": "2026-01-05T10:00:00Z",
+      "completedAt": "2026-01-05T11:15:00Z",
+      "completedBy": "opencode",
+      "dependencies": [
+        "11"
+      ],
+      "notes": null
+    },
+    {
+      "id": "16",
+      "priority": 1,
+      "feature": "Fix broken prompt function in src/utils.ts by replacing the manual stdin 'end' event listener with Node.js readline.question() API to properly handle Enter key submission and backspace/delete editing",
+      "status": "completed",
+      "category": "bugfix",
+      "createdAt": "2026-01-05T12:00:00Z",
+      "completedAt": "2026-01-05T13:00:00Z",
+      "completedBy": "opencode",
+      "dependencies": [
+        "10"
+      ],
+      "notes": "Replaced manual stdin handling with Node.js readline.question() API for proper Enter key and backspace support"
+    },
+    {
+      "id": "17",
+      "priority": 2,
+      "feature": "Fix tests that create files to properly clean up after running: Implement cleanup hooks in test setup/teardown to remove temporary files created during test execution",
+      "status": "completed",
+      "category": "test",
+      "createdAt": "2026-01-06T02:01:00Z",
+      "completedAt": "2026-01-06T02:10:00Z",
+      "completedBy": "opencode",
+      "dependencies": [],
+      "notes": "Added afterEach hooks to task-repository.test.ts, task-manager.test.ts, and task-cli-integration.test.ts to clean up temporary JSON files"
+    },
+    {
+      "id": "18",
+      "priority": 1,
+      "feature": "Ensure all scripts and tests work on different operating systems: Add cross-platform compatibility testing and fix any Windows/Linux/macOS-specific path handling issues",
+      "status": "completed",
+      "category": "infrastructure",
+      "createdAt": "2026-01-06T02:02:00Z",
+      "completedAt": "2026-01-06T03:00:00Z",
+      "completedBy": "opencode",
+      "dependencies": [],
+      "notes": "Created cross-platform.test.ts with 6 test cases verifying path handling, file operations, and platform-specific behavior. All tests pass on Windows 11."
+    },
+    {
+      "id": "19",
+      "priority": 1,
+      "feature": "add a line to the wiggum prompt that ensures that the current project has an AGENTS.md file and in it is established that the project is using wiggum to manage tasks",
+      "status": "completed",
+      "category": "docs",
+      "createdAt": "2026-01-06T02:57:12.769Z",
+      "completedAt": "2026-01-06T03:06:50.756Z",
+      "completedBy": "manual",
+      "dependencies": [],
+      "notes": "read current AGENTS.md file and also add that if needed"
+    }
+  ]
+}

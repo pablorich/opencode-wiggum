@@ -1,0 +1,29 @@
+{
+  "name": "wiggum-opencode",
+  "version": "0.1.0",
+  "description": "Automated task completion using OpenCode and Bun",
+  "type": "module",
+  "scripts": {
+    "test": "bun test",
+    "typecheck": "bunx tsc --noEmit",
+    "lint": "eslint .",
+    "prepare": "husky",
+    "task": "bun src/task-cli.ts",
+    "build:wiggum": "bun build bin/wiggum.ts --outfile bin/wiggum --compile",
+    "build:task": "bun build bin/task.ts --outfile bin/task --compile",
+    "build": "bun scripts/build.ts",
+    "build:release": "bun scripts/build.ts && powershell -Command \"Compress-Archive -Path bin/wiggum,bin/task -DestinationPath wiggum-windows-x64.zip -Force\""
+  },
+  "bin": {
+    "wiggum": "./bin/wiggum.ts",
+    "task": "./bin/task.ts"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.52.0",
+    "@typescript-eslint/parser": "^8.52.0",
+    "@types/bun": "^1.3.5",
+    "eslint": "^9.39.2",
+    "husky": "^9.1.7",
+    "typescript": "^5.3.3"
+  }
+}

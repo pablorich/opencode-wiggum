@@ -1,0 +1,130 @@
+Progress Log
+============
+
+2025-01-05: Task 1 - Initialize project structure - COMPLETED
+- Created src/ and tests/ directories
+2025-01-05: Task 2 - Set up package.json with dependencies - COMPLETED
+- Created package.json with TypeScript dependency
+- Installed dependencies using bun install
+2025-01-06: Task 3 - Create basic TypeScript configuration - COMPLETED
+- Created tsconfig.json with strict mode enabled
+- Configured compiler options for ES2022 target and ESNext module
+- Verified with bun x tsc --noEmit
+2025-01-06: Task 4 - Configure the testing environment - COMPLETED
+- Installed bun-types for TypeScript support
+- Created sample add function in src/index.ts
+- Created test file tests/index.test.ts with 3 test cases
+- Created tests/bun-test.d.ts for test globals
+- Updated tsconfig.json to include tests/ directory and bun-types
+- Verified tests pass with bun test (3 pass)
+- Verified type checking with bun x tsc --noEmit (no errors)
+2025-01-06: Task 5 - Create AGENTS.md - COMPLETED
+- Created AGENTS.md with project overview and components
+- Documented project state, infrastructure, and development workflow
+- Verified with bun x tsc --noEmit and bun test
+2025-01-06: Task 6 - Set up eslint and precommit hook - COMPLETED
+- Installed eslint and typescript eslint plugins
+- Created eslint.config.mjs with recommended rules
+- Added lint script to package.json
+- Installed and initialized husky for git hooks
+- Configured pre-commit hook to run tests, lint, and typecheck
+- Verified all commands work correctly
+2025-01-06: Task 7 - Setup a gitignore file - COMPLETED
+- Created .gitignore with common exclusions
+- Verified git ignores node_modules, nul, and other unwanted files
+- Verified with bun x tsc --noEmit and bun test
+2025-01-06: Task 8 - Create TaskRepository class - COMPLETED
+- Created src/task-repository.ts with TaskRepository class
+- Implemented readPrd() method to read PRD file
+- Implemented writePrd() method to write PRD file
+- Class accepts optional prdPath parameter with default value
+- Verified with bun x tsc --noEmit (no errors)
+- Verified with bun test (10 pass, 0 fail)
+2025-01-06: Task 9 - Create TaskManager class - COMPLETED
+- Created src/task-manager.ts with TaskManager class
+- Implemented addTask() method to add new tasks
+- Implemented listTasks() method with filtering options
+- Implemented updateTask() method with partial updates
+- Implemented completeTask() method with dependency validation
+- Implemented getStatus() method for summary statistics
+- Implemented deleteTask() method to remove tasks
+- Private getNextId() method for ID generation
+- Uses TaskRepository for data persistence
+- Verified with bun x tsc --noEmit (no errors)
+- Verified with bun test (10 pass, 0 fail)
+2025-01-06: Task 10 - Extract utility functions - COMPLETED
+- Created src/utils.ts with utility functions
+- Extracted inferCategory() function from task-cli.ts
+- Extracted prompt() function from task-cli.ts
+- Updated src/task-cli.ts to import utilities from utils.ts
+- Verified with bun x tsc --noEmit (no errors)
+- Verified with bun test (10 pass, 0 fail)
+2025-01-06: Task 12 - Create tests for TaskRepository - COMPLETED
+- Created tests/task-repository.test.ts with 5 test cases
+- Tested readPrd() method
+- Tested writePrd() method
+- Tested file overwriting behavior
+- Tested JSON formatting
+- Tested empty backlog handling
+- Verified with bun test (15 pass, 0 fail)
+2025-01-06: Task 13 - Create tests for TaskManager - COMPLETED
+- Created tests/task-manager.test.ts with 18 test cases
+- Tested addTask() with sequential ID generation
+- Tested listTasks() with sorting and filtering
+- Tested updateTask() with partial updates
+- Tested completeTask() with dependency validation
+- Tested getStatus() for summary statistics
+- Tested deleteTask() to remove tasks
+- Verified with bun test (33 pass, 0 fail)
+2025-01-06: Task 14 - Create tests for utility functions - COMPLETED
+- Created tests/utils.test.ts with 7 test cases
+- Tested inferCategory() function for all categories
+- Tested keyword matching at any position
+- Tested case insensitivity
+- Verified with bun test (40 pass, 0 fail)
+2025-01-06: Task 11 - Refactor CLI entry point - COMPLETED
+- Refactored src/task-cli.ts to use TaskManager
+- Removed direct file operations (readPrd, writePrd)
+- Removed duplicate utility functions
+- Simplified CLI functions to use TaskManager methods
+- Reduced code duplication and improved maintainability
+- Verified with bun x tsc --noEmit (no errors)
+- Verified with bun test (40 pass, 0 fail)
+2025-01-06: Task 15 - Create integration tests for CLI commands - COMPLETED
+- Created tests/task-cli-integration.test.ts with 9 test cases
+- Tested list command with various filters
+- Tested update and complete command validation
+- Tested status command output
+- Tested help command
+- Added PRD_PATH environment variable support to CLI
+- Verified with bun test (49 pass, 0 fail)
+2025-01-06: Task 16 - Fix broken prompt function - COMPLETED
+- Replaced manual stdin 'end' event listener with Node.js readline.question() API
+- Now properly handles Enter key submission
+- Supports backspace/delete editing of typed text
+- Imported readline from node:readline
+- Verified with bun x tsc --noEmit (no errors)
+- Verified with bun test (49 pass, 0 fail)
+2026-01-06: Task 17 - Fix test cleanup - COMPLETED
+- Added afterEach hooks to task-repository.test.ts
+- Added afterEach hooks to task-manager.test.ts
+- Added afterEach hooks to task-cli-integration.test.ts
+- Cleanup removes temporary JSON files after each test
+- Verified with bun test (49 pass, 0 fail)
+- Verified with bun x tsc --noEmit (no errors)
+2026-01-06: Task 18 - Cross-platform compatibility - COMPLETED
+- Created tests/cross-platform.test.ts with 6 test cases
+- Tested join() function creates correct paths for current platform
+- Verified import.meta.dir works correctly across platforms
+- Tested TaskRepository reads and writes with platform-correct paths
+- Tested JSON serialization handles all platforms correctly
+- Verified file operations work with relative paths
+- Tested path separators are consistent across operations
+- Verified no hardcoded path separators in codebase
+- All tests pass on Windows 11
+- Verified with bun test (55 pass, 0 fail)
+- Verified with bun run typecheck (no errors)
+2026-01-06: Task 19 - Document wiggum in AGENTS.md - COMPLETED
+- Added line to Project State section documenting use of wiggum for task management
+- Verified with bun test (67 pass, 0 fail)
+- Verified with bun run typecheck (no errors)
