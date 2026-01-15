@@ -1,6 +1,7 @@
 # Wiggum
 
 Automated task completion using OpenCode and Bun. Wiggum iteratively completes tasks from your project's PRD (Product Requirements Document) using AI assistance.
+This is not built by the OpenCode team and is not affiliated with them in any way.
 
 ## Installation
 
